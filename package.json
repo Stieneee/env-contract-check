@@ -1,0 +1,61 @@
+{
+  "name": "env-contract-check",
+  "version": "0.0.0",
+  "description": "Create a contract of environment varaibles for different environments.",
+  "main": "index.js",
+  "scripts": {
+    "lint": "npx eslint .",
+    "test": "npx mocha --exit"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Stieneee/env-contract-check.git"
+  },
+  "keywords": [
+    "env",
+    "check",
+    "contract",
+    "environment",
+    "NODE_ENV",
+    "development",
+    "production",
+    "docker"
+  ],
+  "author": "Tyler Stiene <tystiene@gmail.com> (https://tylerstiene.ca)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Stieneee/env-contract-check/issues"
+  },
+  "homepage": "https://github.com/Stieneee/env-contract-check#readme",
+  "eslintIgnore": [
+    "/coverage",
+    "/node_modules"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "airbnb-base"
+    ],
+    "parserOptions": {
+      "ecmaVersion": 2017
+    },
+    "env": {
+      "node": true,
+      "mocha": true
+    },
+    "rules": {
+      "max-len": "off",
+      "no-console": "off"
+    }
+  },
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-import-resolver-node": "^0.3.2",
+    "eslint-plugin-import": "^2.16.0",
+    "mocha": "^6.0.1"
+  },
+  "dependencies": {
+    "dot-prop": "^4.2.0",
+    "is-docker": "^1.1.0"
+  }
+}
