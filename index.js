@@ -1,66 +1,95 @@
+const debug = require('debug')('ENV-CONTRACT-CHECK');
+const table = require('markdown-table');
 const dot = require('dot-prop');
 const isDocker = require('is-docker');
 
 const contract = {};
-let NODE_ENV_SET_BY_ECC = false
+let NODE_ENV_SET_BY_ECC = false;
 
-const env = (function() {
+// Check
+const env = (function env() {
   if (!process.env.NODE_ENV) {
+    debug('NODE_ENV is not set');
     NODE_ENV_SET_BY_ECC = true;
 
-    let result;
+    if (isDocker()) process.env.NODE_ENV = 'docker';
+    else process.env.NODE_ENV = 'development';
 
-    if (isDocker()) result = 'docker';
-    // PM2 other not managers
-    // if is EC2 ETC
-    // if is appveryor travis etc
-    else result = 'development'
-
-    console.warn(`NODE_ENV HAS NOT BEEN SET DEFAULTING TO ${result}`);
-    process.env.NODE_ENV = result;
-    return result    
-  } else {
-    console.log('NODE_ENV set externally', process.env.NODE_ENV);
+    console.log('NODE_ENV HAS NOT BEEN SET DEFAULTING TO', process.env.NODE_ENV);
+    return process.env.NODE_ENV;
   }
-}) ();
+  console.log('NODE_ENV', process.env.NODE_ENV);
+  return process.env.NODE_ENV;
+}());
 
-module.exports.register = function (terms) {
+module.exports.register = function register(terms) {
+  if (env !== process.env.NODE_ENV) {
+    throw new Error('NODE_ENV has been changed by the process. env-contract-check does not allow this after it has been required.');
+  }
 
   function registerHandle(term) {
     if (typeof term !== 'object') throw new Error('not an object');
     if (!term.name) throw new Error('missing variable name of environemnt variable');
+    if (!term.defaults) {
+      debug('no term defaults object');
+      term.defaults = {};
+    }
 
-    if (contract[term.name] && term.allowOverwrtie ) throw new Error('env varaible already registered')
+    if (contract[term.name] && term.allowReregister) throw new Error('env varaible already registered');
 
-    console.log(dot.has(process.env, term.name));
+    contract[term.name] = term;
+
+    // If not set
     if (!dot.has(process.env, term.name)) {
-      if (!dot.has(process.env, term.name) && term.default === undefined) throw new Error(`${term.name} not set and no default. Contract Failed!`)
-      if (!dot.has(process.env, term.name) && process.env.NODE_ENV !== 'development' && term.failNonDev) throw new Error(`${term.name} not set and NODE_ENV is not development. Contract Failed!`)
-      if (!dot.has(process.env, term.name) && process.env.NODE_ENV === 'production' && term.failProd) throw new Error(`${term.name} not set is production. Contract Failed!`)
+      debug(`${term.name} not set`);
 
-      dot.set(process.env, term.name, term.default);
-      if (term.echo) console.warn(`${term.name} ENV varaible set to default ${term.hideValue ? '{HIDDEN}' : dot.get(process.env, term.name) } `)
-    } else {
-      if (term.echo) console.log(`${term.name} ENV varaible set externally ${term.hideValue ? '{HIDDEN}' : dot.get(process.env, term.name) } `)
-    }
-  };
+      // If not optional and no default
+      if (!term.optional && term.defaults[env] === undefined) throw new Error(`${term.name} required no default for NODE_ENV ${env}. Contract Failed!`);
 
-  if (typeof terms === "object") {
-    registerHandle(terms)
-  } else if (typeof terms === "array") {
-    for (const term of terms) {
-      registerHandle(term);
+      // Set Default
+      if (term.defaults[env]) {
+        debug(`${term.name} default avaliable`);
+        dot.set(process.env, term.name, term.defaults[env]);
+        if (term.echo) console.log(`${term.name} ENV varaible set to default ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
+        return;
+      }
+
+      // Optional
+      if (term.echo) {
+        debug(`${term.name} optional no default`);
+        console.log(`${term.name} ENV varaible optional with not default not set`);
+      }
+    } else if (term.echo) {
+      debug(`${term.name} set`);
+      console.log(`${term.name} ENV varaible set externally ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
     }
+  }
+
+  if (Array.isArray(terms)) {
+    debug('register array of environment varaibles');
+    terms.forEach(term => registerHandle(term));
+  } else {
+    debug('register single environment varaible');
+    registerHandle(terms);
   }
 };
 
-module.exports.strict = function() {
+// Called after env is set
+module.exports.strict = function strict() {
   if (NODE_ENV_SET_BY_ECC) {
-    console.error('NODE_ENV was not set. Failing due to env-contract-check strict().')
+    console.error('NODE_ENV was not set. Failing due to env-contract-check strict().');
     process.exit(1);
   }
 };
 
-module.exports.summary = function() {
-
-}
+module.exports.summary = function sumamry() {
+  const data = Object.keys(contract).map((key) => {
+    const c = contract[key];
+    const optional = c.optional ? 'Y' : ' ';
+    const value = c.hidden ? '{HIDDEN}' : dot.get(process.env, c.name);
+    return [key, optional, value];
+  });
+  data.unshift(['Varaible', 'Optional', 'Value']);
+  // data.unshift(['ENV-CONTRACT-CHECK']);
+  console.log(`\nENV-CONTRACT-CHECK\n${table(data)}\n`);
+};
