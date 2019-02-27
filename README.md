@@ -6,12 +6,12 @@ The goal of this package is to make environment variables easy to check, default
 While it is recommened to set NODE_ENV this package supports behaviours around an undefined NODE_ENV varaible.
 This package attempts to balance convience for development with predictable desirable behaviour for deployment.
 
-https://flat.badgen.net/packagephobia/install/env-contract-check/:subject/:status/:green
+[![InstallSize](https://flat.badgen.net/packagephobia/install/env-contract-check/:subject/:status/:green)](https://packagephobia.now.sh/result?p=env-contract-check)
 
 ## Define Contract
 
 ```javascript
-const ecc = require('env-contract-check);
+const ecc = require('env-contract-check');
 
 // all boolean default false
 // register accepts a single object or an array of objects
