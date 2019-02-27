@@ -56,7 +56,7 @@ It is important to use any in process environment loader before requiring this p
 // example using dotenv
 require('dotenv').config()
 // load env before ecc
-const ecc = require('env-contract-check);
+const ecc = require('env-contract-check');
 ```
 
 ## Output
