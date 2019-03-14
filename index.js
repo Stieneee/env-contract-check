@@ -32,7 +32,7 @@ module.exports.register = function register(terms) {
     if (!term.name) throw new Error('missing variable name of environemnt variable');
     if (!term.defaults) {
       debug('no term defaults object');
-      term.defaults = {};
+      term.defaults = {}; //eslint-disable-line
     }
 
     if (contract[term.name] && term.allowReregister) throw new Error('env varaible already registered');
@@ -50,16 +50,16 @@ module.exports.register = function register(terms) {
       if (term.defaults[env]) {
         debug(`${term.name} default avaliable`);
         dot.set(process.env, term.name, term.defaults[env]);
-        if (term.echo) console.log(`${term.name} ENV varaible set to default ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
+        if (term.log) console.log(`${term.name} ENV varaible set to default ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
         return;
       }
 
       // Optional
-      if (term.echo) {
+      if (term.log) {
         debug(`${term.name} optional no default`);
         console.log(`${term.name} ENV varaible optional with not default not set`);
       }
-    } else if (term.echo) {
+    } else if (term.log) {
       debug(`${term.name} set`);
       console.log(`${term.name} ENV varaible set externally ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
     }
