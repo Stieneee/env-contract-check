@@ -1,10 +1,10 @@
 # env-contract-check
 
-Define and check contracts around environment varaibles.
+Define and check contracts around environment variables.
 
-The goal of this package is to make environment variables easy to check, default in development and enforce prsence in production.
-While it is recommened to set NODE_ENV this package supports behaviours around an undefined NODE_ENV varaible.
-This package attempts to balance convience for development with predictable desirable behaviour for deployment.
+The goal of this package is to make environment variables easy to check, default in development and enforce presence in production.
+While it is recommended to set NODE_ENV this package supports behaviors around an undefined NODE_ENV variable.
+This package attempts to balance convenience for development with predictable desirable behavior for deployment.
 
 [![install size](https://packagephobia.now.sh/badge?p=env-contract-check)](https://packagephobia.now.sh/result?p=env-contract-check)
 
@@ -31,8 +31,8 @@ ecc.register([{
 
 ## Checking Environment
 
-By default contracts first check to see if the environment varaible has been set.
-If the varaible is missing the optional flag, defaults object and NODE_ENV are used to determine if the application should error.
+By default contracts first check to see if the environment variable has been set.
+If the variable is missing the optional flag, defaults object and NODE_ENV are used to determine if the application should error.
 It is best to set NODE_ENV but if missed this package defaults to 'development' or 'docker' if in a docker container.
 Support for other process environments is a future goal.
 
@@ -44,11 +44,11 @@ A strict options requires NODE_ENV to be set forcing a process exit(1) if not se
 ecc.strict()
 ```
 
-## Setting the Environemnt
+## Setting the Environment
 
-This package dose not provide a metheod of setting the environment with the excpetion of a defualt.
-As hardcoding some environment variables is security problem an additional environment loader is recommened for efficient loading of the processes environment.
-There are many great metheods for setting the process environment.
+This package dose not provide a method of setting the environment with the exception of a default.
+As hard-coding some environment variables is security issue, an additional environment loader is recommended for efficient loading of the processes environment.
+There are many great methods for setting the process environment.
 One recommendation is [dotenv](https://www.npmjs.com/package/dotenv) which is great for setting the process environment during development and dose not interfere with production process managers.
 It is important to use any in process environment loader before requiring this package.
 
@@ -62,23 +62,31 @@ const ecc = require('env-contract-check');
 ## Output
 
 By default the only console output of this package is the state of NODE_ENV when being required.
-There are two metheods to produce console output for other environemnt variables.
+There are two methods to produce console output for other environment variables.
 The first is to set `ecc.register({log: true})` which will print the name and value to the console.
-The second is a sumamry that can be invoked printing a table of all current registered varaibles.
+The second is a summary that can be invoked printing a table of all current registered variables.
 
 ```javascript
 ecc.summary()
 ```
 
-## Dependancies
+### Hidden
 
-Dependancies that require env variable can safely use this package as well.
-Again it is important to load the env before loading the any dependancies that will require this package.
+In most situations logging a secret is undesirable, marking a variable as hidden will prevent the value from being printed to the console.
 
-## Reregister
+### Stripe-Url-Auth
 
-To prevent unintentional overwriting if a varaible is registered twice the package will error.
-This can be over writted by setting the `allowReregister` property to true of any duplicate register calls.
+All output is passed through [stripe-url-auth](https://www.npmjs.com/package/strip-url-auth) to prevent credentials from printing to the console.
+
+## Dependencies
+
+Dependencies that require env variable can safely use this package as well.
+Again it is important to load the env before loading the any dependencies that will require this package.
+
+## Re-register
+
+To prevent unintentional overwriting if a variable is registered twice the package will error.
+This can be over written by setting the `allowReregister` property to true of any duplicate register calls.
 
 ## Contributing
 

@@ -2,9 +2,15 @@ const debug = require('debug')('ENV-CONTRACT-CHECK');
 const table = require('markdown-table');
 const dot = require('dot-prop');
 const isDocker = require('is-docker');
+const stripUrlAuth = require('strip-url-auth');
 
 const contract = {};
 let NODE_ENV_SET_BY_ECC = false;
+
+// Get the env varialbe and strip auth keys
+function envStrip(name) {
+  return stripUrlAuth(dot.get(process.env, name));
+}
 
 // Check
 const env = (function env() {
@@ -44,13 +50,13 @@ module.exports.register = function register(terms) {
       debug(`${term.name} not set`);
 
       // If not optional and no default
-      if (!term.optional && term.defaults[env] === undefined) throw new Error(`${term.name} required no default for NODE_ENV ${env}. Contract Failed!`);
+      if (!term.optional && term.defaults[env] === undefined) throw new Error(`${term.name} required! No default for NODE_ENV ${env}. Contract Failed!`);
 
       // Set Default
       if (term.defaults[env]) {
         debug(`${term.name} default avaliable`);
         dot.set(process.env, term.name, term.defaults[env]);
-        if (term.log) console.log(`${term.name} ENV varaible set to default ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
+        if (term.log) console.log(`${term.name} ENV varaible set to default ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
         return;
       }
 
@@ -61,7 +67,7 @@ module.exports.register = function register(terms) {
       }
     } else if (term.log) {
       debug(`${term.name} set`);
-      console.log(`${term.name} ENV varaible set externally ${term.hidden ? '{HIDDEN}' : dot.get(process.env, term.name)} `);
+      console.log(`${term.name} ENV varaible set externally ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
     }
   }
 
@@ -86,7 +92,7 @@ module.exports.summary = function sumamry() {
   const data = Object.keys(contract).map((key) => {
     const c = contract[key];
     const optional = c.optional ? 'Y' : ' ';
-    const value = c.hidden ? '{HIDDEN}' : dot.get(process.env, c.name);
+    const value = c.hidden ? '{HIDDEN}' : envStrip(c.name);
     return [key, optional, value];
   });
   data.unshift(['Varaible', 'Optional', 'Value']);

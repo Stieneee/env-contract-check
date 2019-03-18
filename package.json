@@ -53,13 +53,14 @@
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-plugin-import": "^2.16.0",
-    "mocha": "^6.0.1",
+    "mocha": "^6.0.2",
     "release-it": "^10.3.1"
   },
   "dependencies": {
     "debug": "^4.1.1",
     "dot-prop": "^4.2.0",
     "is-docker": "^1.1.0",
-    "markdown-table": "^1.1.2"
+    "markdown-table": "^1.1.2",
+    "strip-url-auth": "^1.0.1"
   }
 }
