@@ -1,6 +1,6 @@
 {
   "name": "env-contract-check",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Create a contract of environment varaibles for different environments.",
   "main": "index.js",
   "scripts": {
