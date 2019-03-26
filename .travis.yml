@@ -4,4 +4,5 @@ node_js:
   - "node"
   - "lts/*"
 before_script:
-  - sudo nvm install $(node --version)
+  - sudo $(which nvm) install $(node --version)
+script: sudo $(which npm) test
