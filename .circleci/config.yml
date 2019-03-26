@@ -11,4 +11,4 @@ jobs: # a collection of steps
           command: npm ci
       - run: # run tests
           name: test
-          command: npm test
+          command: npm run test-ci

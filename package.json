@@ -6,6 +6,7 @@
   "scripts": {
     "lint": "npx eslint .",
     "test": "sudo npx nyc mocha --exit",
+    "test-ci": "npx nyc mocha --exit",
     "test-debug": "DEBUG=TEST sudo npx nyc mocha --exit",
     "publish": "npx release-it"
   },
