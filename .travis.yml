@@ -3,3 +3,6 @@ language: node_js
 node_js:
   - "node"
   - "lts/*"
+before_script:
+  - npm install -g mocha nyc
+script: sudo nyc mocha --exit

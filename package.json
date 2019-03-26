@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint .",
-    "test": "sudo node ./node_modules/.bin/nyc ./node_modules/.bin/mocha --exit",
-    "test-debug": "DEBUG=TEST sudo node ./node_modules/.bin/nyc ./node_modules/.bin/mocha --exit",
+    "test": "sudo npx nyc mocha --exit",
+    "test-debug": "DEBUG=TEST sudo npx nyc mocha --exit",
     "publish": "npx release-it"
   },
   "repository": {
