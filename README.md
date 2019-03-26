@@ -1,5 +1,6 @@
 # env-contract-check
 
+[![Build Status](https://travis-ci.org/Stieneee/env-contract-check.svg?branch=master)](https://travis-ci.org/Stieneee/env-contract-check)
 [![install size](https://packagephobia.now.sh/badge?p=env-contract-check)](https://packagephobia.now.sh/result?p=env-contract-check)
 
 Define and check contracts around environment variables.
