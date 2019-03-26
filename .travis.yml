@@ -4,6 +4,4 @@ node_js:
   - "node"
   - "lts/*"
 before_script:
-  - sudo nvm install $(which npm)
-  - sudo npm install -g mocha nyc
-script: sudo nyc mocha --exit
+  - sudo nvm install $(node --version)
