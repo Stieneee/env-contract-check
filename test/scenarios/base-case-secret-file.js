@@ -1,5 +1,6 @@
 const ecc = require('../../index');
 
 ecc.register({
-  name: 'MONGO_URL',
+  name: 'TEST_SECRET',
 });
+
