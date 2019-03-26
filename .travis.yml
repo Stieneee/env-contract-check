@@ -4,5 +4,5 @@ node_js:
   - "node"
   - "lts/*"
 before_script:
-  - sudo $(which nvm) install $(node --version)
+  - sudo $(which nvm) install $TRAVIS_NODE_VERSION
 script: sudo $(which npm) test
