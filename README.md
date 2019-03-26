@@ -1,5 +1,6 @@
 # env-contract-check
 
+[![CircleCI](https://circleci.com/gh/Stieneee/env-contract-check.svg?style=svg)](https://circleci.com/gh/Stieneee/env-contract-check)
 [![install size](https://packagephobia.now.sh/badge?p=env-contract-check)](https://packagephobia.now.sh/result?p=env-contract-check)
 
 Define and check contracts around environment variables.
