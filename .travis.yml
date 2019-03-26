@@ -1,8 +1,9 @@
+dist: xenial
 sudo: true
 language: node_js
 node_js:
   - "node"
   - "lts/*"
 before_script:
-  - sudo $(which nvm) install $TRAVIS_NODE_VERSION
+  - sudo nvm install $TRAVIS_NODE_VERSION
 script: sudo $(which npm) test
