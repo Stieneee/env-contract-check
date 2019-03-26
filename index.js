@@ -35,9 +35,14 @@ module.exports.register = function register(terms) {
     throw new Error('NODE_ENV has been changed by the process. env-contract-check does not allow this after it has been required.');
   }
 
+
   function registerHandle(term) {
     if (typeof term !== 'object') throw new Error('not an object');
     if (!term.name) throw new Error('missing variable name of environemnt variable');
+    if (term.default) {
+      console.warn('env-contract-check assuming default is defaults');
+      term.defaults = term.default; // eslint-disable-line
+    }
     if (!term.defaults) {
       debug('no term defaults object');
       term.defaults = {}; //eslint-disable-line
