@@ -51,13 +51,13 @@
     }
   },
   "devDependencies": {
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
     "eslint-import-resolver-node": "^0.3.2",
     "eslint-plugin-import": "^2.16.0",
     "mocha": "^6.0.2",
     "nyc": "^13.3.0",
-    "release-it": "^10.3.1"
+    "release-it": "^10.4.0"
   },
   "dependencies": {
     "debug": "^4.1.1",
