@@ -15,7 +15,7 @@ function envStrip(name) {
 }
 
 // Check
-const env = (function env() {
+function envCheck() {
   if (!process.env.NODE_ENV) {
     debug('NODE_ENV is not set');
     NODE_ENV_SET_BY_ECC = true;
@@ -26,9 +26,11 @@ const env = (function env() {
     console.log('NODE_ENV HAS NOT BEEN SET DEFAULTING TO', process.env.NODE_ENV);
     return process.env.NODE_ENV;
   }
-  console.log('NODE_ENV', process.env.NODE_ENV);
+  console.log('NODE_ENV env-contract-check', process.env.NODE_ENV);
   return process.env.NODE_ENV;
-}());
+}
+
+const env = envCheck();
 
 module.exports.register = function register(terms) {
   if (env !== process.env.NODE_ENV) {
