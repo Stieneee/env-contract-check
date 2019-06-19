@@ -6,7 +6,7 @@ ecc.strict();
 
 ecc.register([{
   name: 'MONGO_URL',
-  defaults: {
+  default: {
     development: 'DEFAULT',
   },
 }]);
