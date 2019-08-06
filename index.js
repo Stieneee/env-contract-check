@@ -9,7 +9,7 @@ const contract = {};
 let NODE_ENV_SET_BY_ECC = false;
 let noLog = false;
 
-// Get the env varialbe and strip auth keys
+// Get the env variable and strip auth keys
 function envStrip(name) {
   return stripUrlAuth(dot.get(process.env, name));
 }
@@ -37,10 +37,9 @@ module.exports.register = function register(terms) {
     throw new Error('NODE_ENV has been changed by the process. env-contract-check does not allow this after it has been required.');
   }
 
-
   function registerHandle(term) {
     if (typeof term !== 'object') throw new Error('not an object');
-    if (!term.name) throw new Error('missing variable name of environemnt variable');
+    if (!term.name) throw new Error('missing variable name of environment variable');
     if (term.default) {
       console.warn('env-contract-check assuming default is defaults');
       term.defaults = term.default; // eslint-disable-line
@@ -50,7 +49,7 @@ module.exports.register = function register(terms) {
       term.defaults = {}; //eslint-disable-line
     }
 
-    if (contract[term.name] && term.allowReregister) throw new Error('env varaible already registered');
+    if (contract[term.name] && term.allowReregister) throw new Error('env variable already registered');
 
     contract[term.name] = term;
 
@@ -61,22 +60,22 @@ module.exports.register = function register(terms) {
       // Check and load from /run/secrets/${name} - default docker secrets location
       if (fs.existsSync(`/run/secrets/${term.name}`)) {
         dot.set(process.env, term.name, fs.readFileSync(`/run/secrets/${term.name}`).toString());
-        if (!term.noLog && !noLog) console.log(`${term.name} varaible set to by file /run/secrets/${term.name} ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
+        if (!term.noLog && !noLog) console.log(`${term.name} variable set to by file /run/secrets/${term.name} ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
         return;
       }
 
-      // if process.env.${name}_FILE then check and load from process.env.${name}_FILE - customizalbe and kube friendly :)
+      // if process.env.${name}_FILE then check and load from process.env.${name}_FILE - customizable and kube friendly :)
       if (process.env[`${term.name}_FILE`] && fs.existsSync(process.env[`${term.name}_FILE`])) {
         dot.set(process.env, term.name, fs.readFileSync(process.env[`${term.name}_FILE`]).toString());
-        if (!term.noLog && !noLog) console.log(`${term.name} varaible set to by file ${process.env[`${term.name}_FILE`]} ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
+        if (!term.noLog && !noLog) console.log(`${term.name} variable set to by file ${process.env[`${term.name}_FILE`]} ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
         return;
       }
 
       // Set Default
       if (term.defaults[env]) {
-        debug(`${term.name} default avaliable`);
+        debug(`${term.name} default available`);
         dot.set(process.env, term.name, term.defaults[env]);
-        if (!term.noLog && !noLog) console.log(`${term.name} varaible set to default ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
+        if (!term.noLog && !noLog) console.log(`${term.name} variable set to default ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
         return;
       }
 
@@ -85,17 +84,17 @@ module.exports.register = function register(terms) {
 
       debug(`${term.name} optional no default`);
 
-      if (!term.noLog && !noLog) console.log(`${term.name} varaible optional, no default, not set`);
+      if (!term.noLog && !noLog) console.log(`${term.name} variable optional, no default, not set`);
     } else if (!term.noLog && !noLog) {
-      console.log(`${term.name} varaible set externally ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
+      console.log(`${term.name} variable set externally ${term.hidden ? '{HIDDEN}' : envStrip(term.name)} `);
     }
   }
 
   if (Array.isArray(terms)) {
-    debug('register array of environment varaibles');
+    debug('register array of environment variables');
     terms.forEach(term => registerHandle(term));
   } else {
-    debug('register single environment varaible');
+    debug('register single environment variable');
     registerHandle(terms);
   }
 };
@@ -108,14 +107,14 @@ module.exports.strict = function strict() {
   }
 };
 
-module.exports.summary = function sumamry() {
+module.exports.summary = function summary() {
   const data = Object.keys(contract).map((key) => {
     const c = contract[key];
     const optional = c.optional ? 'Y' : ' ';
     const value = c.hidden ? '{HIDDEN}' : envStrip(c.name);
     return [key, optional, value];
   });
-  data.unshift(['Varaible', 'Optional', 'Value']);
+  data.unshift(['Variable', 'Optional', 'Value']);
   // data.unshift(['ENV-CONTRACT-CHECK']);
   console.log(`\nENV-CONTRACT-CHECK\n${table(data)}\n`);
 };
@@ -123,4 +122,3 @@ module.exports.summary = function sumamry() {
 module.exports.noLog = function setNoLog(x) {
   noLog = x;
 };
-
