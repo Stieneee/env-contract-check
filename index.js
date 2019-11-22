@@ -92,7 +92,7 @@ module.exports.register = function register(terms) {
 
   if (Array.isArray(terms)) {
     debug('register array of environment variables');
-    terms.forEach(term => registerHandle(term));
+    terms.forEach((term) => registerHandle(term));
   } else {
     debug('register single environment variable');
     registerHandle(terms);

@@ -12,7 +12,7 @@ describe('Test Scenarios', () => {
           MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code === 0) {
           done();
@@ -30,7 +30,7 @@ describe('Test Scenarios', () => {
           MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code === 0) {
           done();
@@ -48,7 +48,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code !== 0) {
           done();
@@ -68,7 +68,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code === 0) {
           done();
@@ -86,7 +86,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code !== 0) {
           done();
@@ -106,7 +106,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code === 0) {
           done();
@@ -126,7 +126,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code === 0) {
           done();
@@ -144,7 +144,7 @@ describe('Test Scenarios', () => {
           // MONGO_URL: 'EXTERNAL',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code !== 0) {
           done();
@@ -169,7 +169,7 @@ describe('Test Scenarios', () => {
           NODE_ENV: 'development',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         fs.unlinkSync('/run/secrets/TEST_SECRET');
         if (code === 0) {
@@ -186,7 +186,7 @@ describe('Test Scenarios', () => {
           NODE_ENV: 'development',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code !== 0) {
           done();
@@ -207,7 +207,7 @@ describe('Test Scenarios', () => {
           TEST_SECRET_FILE: '/tmp/testfile',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         fs.unlinkSync('/tmp/testfile');
         if (code === 0) {
@@ -225,7 +225,7 @@ describe('Test Scenarios', () => {
           TEST_SECRET_FILE: '/tmp/testfile',
         },
       });
-      p.stdout.on('data', data => debug(data.toString()));
+      p.stdout.on('data', (data) => debug(data.toString()));
       p.on('exit', (code) => {
         if (code !== 0) {
           done();
