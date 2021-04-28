@@ -19,8 +19,14 @@ const ecc = require('env-contract-check');
 // register accepts a single object or an array of objects
 ecc.register([{
   name: 'MONGO_URL', // required
-  optional: true,
+  optional: true || { // set the variable as optional in all environments or specific environments
+    ${NODE_ENV}: true,
+    development: false,
+    test: true,
+    production: false,
+  },
   defaults: {
+    ${NODE_ENV}: 'default for that environment',
     development: 'mongo://localhost'
     docker: 'mongo://mongo',
     // production: 'mongo://mongo', // not recommend to set production default
@@ -64,7 +70,7 @@ const ecc = require('env-contract-check');
 ### Setting the Environment - Secret Files
 
 Both Docker and Kubernetes provide a secret object with the ability to present these as a file inside a container.
-By default this package will check if the file name of the contract name exsists in the /run/secrets directory and loads the content into that environment variable.
+By default this package will check if the file name of the contract name exists in the /run/secrets directory and loads the content into that environment variable.
 A customized file path can be set by setting the a environment variable of the name of the contract with '_FILE' appeneded.
 
 #### Example 1 - Load from Default Location
@@ -126,7 +132,7 @@ ecc.register({
   name: 'MONGO_URL'
   hidden: true
 });
-// OUTPUT: MONGO_URL varaible set to default {HIDDEN}
+// OUTPUT: MONGO_URL variable set to default {HIDDEN}
 ```
 
 ### Stripe-Url-Auth

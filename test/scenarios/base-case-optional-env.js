@@ -2,7 +2,10 @@ const ecc = require('../../index');
 
 ecc.register({
   name: 'MONGO_URL',
-  optional: true,
+  optional: {
+    development: true,
+    production: false
+  },
 });
 
 ecc.summary();
