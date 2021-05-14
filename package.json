@@ -1,7 +1,7 @@
 {
   "name": "env-contract-check",
   "version": "0.4.0",
-  "description": "Create a contract of environment varaibles for different environments.",
+  "description": "Create a contract of environment variables for different environments.",
   "main": "index.js",
   "scripts": {
     "lint": "npx eslint .",
@@ -47,7 +47,8 @@
     },
     "rules": {
       "max-len": "off",
-      "no-console": "off"
+      "no-console": "off",
+      "no-restricted-syntax": "off"
     }
   },
   "devDependencies": {

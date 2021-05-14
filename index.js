@@ -1,6 +1,6 @@
 const fs = require('fs');
 const debug = require('debug')('ENV-CONTRACT-CHECK');
-const table = require('markdown-table')
+const table = require('markdown-table');
 const dot = require('dot-prop');
 const isDocker = require('is-docker');
 const stripUrlAuth = require('strip-url-auth');
@@ -80,7 +80,7 @@ module.exports.register = function register(terms) {
       }
 
       // If not optional and no default
-      if (term.optional !== true && term.optional[env] !== true) throw new Error(`${term.name} required! No default for NODE_ENV ${env}. Contract Failed!`);
+      if (term.optional !== true && (term.optional || {})[env] !== true) throw new Error(`${term.name} required! No default for NODE_ENV ${env}. Contract Failed!`);
 
       debug(`${term.name} optional no default`);
 
@@ -110,16 +110,16 @@ module.exports.strict = function strict() {
 module.exports.summary = function summary() {
   const data = Object.keys(contract).map((key) => {
     const c = contract[key];
-    let optional = ''
+    let optional = '';
 
     if (c.optional === true) optional = 'Y';
     else if (typeof c.optional === 'object') {
-      for (const i in c.optional) {
+      for (const i of Object.keys(c.optional)) {
         if (Object.hasOwnProperty.call(c.optional, i)) {
-          if (c.optional[i] === true) optional = `${optional}${i} `
+          if (c.optional[i] === true) optional = `${optional}${i} `;
         }
       }
-    } 
+    }
     const value = c.hidden ? '{HIDDEN}' : envStrip(c.name);
     return [key, optional, value];
   });
